@@ -23,9 +23,9 @@
    
       
 */
-
+//This creates the reportHTML variable and inserts html code to display h1 text on the docuement.
 var reportHTML = "<h1>" + raceTitle + "</h1>";
-
+//This for loop creates part of the table by looping through every item in the "race" array and calculates numbers for each item and adds the table to the reportHTML variable.
 for (var i = 0; i < race.length; i++) {
     var totalVotes = 0;
     votes[i].forEach(calcSum);
@@ -35,7 +35,7 @@ for (var i = 0; i < race.length; i++) {
 }
 
 document.getElementsByTagName("section")[0].innerHTML = reportHTML;
-
+//This function creates more of teh table by getting more items and calculates numbers for each item and places them into the table in the rowHTML variable. The second for loop will add a bar while using the the createBar function.
 function candidateRows(raceNum, totalVotes) {
     var rowHTML = "";
     for (var j = 0; j <= 2; j++) {
@@ -43,9 +43,16 @@ function candidateRows(raceNum, totalVotes) {
         var candidateParty = party[raceNum][j];
         var candidateVotes = votes[raceNum][j];
         var candidatePercent = calcPercent(candidateVotes, totalVotes);
-        rowHTML += "<tr><td>" + candidateName + "(" + candidateParty + ")</td><td>" + candidateVotes.toLocaleString() + "(" + candidatePercent.toFixed(1) + ")</td></tr>";
-        return rowHTML;
+        rowHTML += "<tr><td>" + candidateName + "(" + candidateParty + ")</td><td>" + candidateVotes.toLocaleString() + "(" + candidatePercent.toFixed(1) + ")</td>";
+
+        for (var k = 0; k < candidatePercent; k++) {
+            rowHTML += createBar(candidateParty, candidatePercent);
+        }
+
+        rowHTML += "</tr>";
+
     }
+    return rowHTML;
 }
 
 
@@ -58,18 +65,23 @@ function calcSum(value) {
 function calcPercent(value, sum) {
     return (100 * value / sum);
 }
-
+//This function will add html code to figure out the types of the bars for each party type. For each party type there will be slightly different code. 
 function createBar(partyType) {
     var barHTML = "";
     switch (partyType) {
         case "D":
             barHTML = "<td class='dem'></td>"
+
             break;
+
         case "R":
             barHTML = "<td class='rep'></td>"
+
             break;
+
         case "I":
             barHTML = "<td class='ind'></td>"
+
             break;
     }
     return barHTML;
